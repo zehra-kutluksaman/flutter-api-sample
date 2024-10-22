@@ -4,9 +4,14 @@ import 'package:api_simple/view/post_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   //Registering PostController with GetX for dependency management.
   final PostController postController = Get.put(PostController());
 
@@ -89,73 +94,74 @@ class HomePage extends StatelessWidget {
             child: Obx(() {
               if (postController.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
-              }
-
-              return ListView.builder(
-                itemCount: postController.posts.length,
-                itemBuilder: (context, index) {
-                  var post = postController.posts[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Get.to(() => PostDetailPage(
-                            postId: index,
-                          ));
-                    },
-                    child: SizedBox(
-                      height: 200,
-                      child: Card(
-                        shadowColor: const Color.fromARGB(255, 180, 178, 178),
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        margin: const EdgeInsets.all(10),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.network(
-                                      post.thumbnail!,
-                                      height: screenSize.height * 0.17,
-                                      width: screenSize.height * 0.2,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 7),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+              } else {
+                return ListView.builder(
+                  itemCount: postController.posts.length,
+                  itemBuilder: (context, index) {
+                    var post = postController.posts[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => PostDetailPage(
+                              postId: index,
+                            ));
+                      },
+                      child: SizedBox(
+                        height: 200,
+                        child: Card(
+                          shadowColor: const Color.fromARGB(255, 180, 178, 178),
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          margin: const EdgeInsets.all(10),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Column(
                                   children: [
-                                    Text(
-                                      post.title ?? 'No Title',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.network(
+                                        post.thumbnail!,
+                                        height: screenSize.height * 0.17,
+                                        width: screenSize.height * 0.2,
+                                        fit: BoxFit.cover,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      post.content ?? 'No Content',
-                                      style: const TextStyle(fontSize: 16),
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                const SizedBox(width: 7),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        post.title ?? 'No Title',
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        post.content ?? 'No Content',
+                                        style: const TextStyle(fontSize: 16),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              );
+                    );
+                  },
+                );
+              }
             }),
           ),
         ],
